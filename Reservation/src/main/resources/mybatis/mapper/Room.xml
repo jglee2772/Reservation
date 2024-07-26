@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotel.book.DAO.RoomDAO">
+	<select id="getTypeList" resultType="com.hotel.book.DTO.roomtypeDTO">
+		select id,typename from roomtype
+	</select>
+	<insert id="insertRoom">
+		insert into room set name=#{param1},type=#{param2},personal=#{param3},price=#{param4}
+	</insert>
+	<update id="updateRoom">
+		update room set name=#{param2},type=#{param3},personal=#{param4},price=#{param5} where id=#{param1}
+	</update>
+	<select id="getRoomList" resultType="com.hotel.book.DTO.roomDTO">
+		select a.id, b.typename, a.name, a.personal, a.price
+		from room a, roomtype b
+		where a.type=b.id
+		order by a.id;
+	</select>
+	<delete id="deleteRoom">
+		delete from room where id=#{param1}
+	</delete>
+	<select id="getSelect" resultType="com.hotel.book.DTO.roomDTO">
+		select a.id,a.name, a.personal, a.price
+		from room a,roomtype b
+		where a.type=b.id
+		and b.id=#{param1};
+	</select>
+	<insert id="insertBook">
+		insert into book set room_id=#{param1},howmany=#{param2},howmuch=#{param3},checkin=#{param4},checkout=#{param5},name=#{param6},mobile=#{param7},created=current_timestamp
+	</insert>
+	<select id="getBookList" resultType="com.hotel.book.DTO.bookDTO">
+		select a.id,a.checkin,a.checkout,b.name roomname,a.name,a.mobile,a.howmany,a.howmuch
+		from book a , room b
+		where a.room_id=b.id
+		order by id;	
+	</select>
+	<select id="typeName" resultType="com.hotel.book.DTO.roomDTO">
+		select b.typename
+		from room a, roomtype b
+		where a.type=b.id
+		and a.name=#{param1};
+	</select>
+	<delete id="deleteBook">
+		delete from book where id=#{param1}
+	</delete>
+	<select id="dateSum" resultType="com.hotel.book.DTO.bookDTO">
+		select datediff(checkout,checkin) as checkin
+		from book a ,room b
+		where a.room_id=b.id
+        and b.id=#{param1};
+	</select>
+	<select id="getFutureBookList" resultType="com.hotel.book.DTO.bookDTO">
+	    SELECT a.id, a.checkin, a.checkout, b.name AS roomname, a.name, a.mobile, a.howmany, a.howmuch
+	    FROM book a
+	    JOIN room b ON a.room_id = b.id
+	    WHERE a.checkout >= CURDATE()
+	    ORDER BY a.checkin;
+	</select>
+</mapper>
