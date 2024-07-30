@@ -229,6 +229,29 @@ $(document)
         });
     });
 })
+.on('change','#datea',function(){
+	let date1 = $('#datea').val();
+	let datea = new Date(date1);
+	let nowdate = new Date();
+	console.log(datea);
+	console.log(nowdate);
+	if(datea < nowdate) {
+		alert("checkin을 다시 확인해주세요");
+    	$('#datea').val('');
+    	return false;
+	}
+})
+.on('change','#dateb',function(){
+	let date1 = $('#datea').val();
+	let date2 = $('#dateb').val();
+	datea = new Date(date1);
+	dateb = new Date(date2);
+	if(datea >= dateb) {
+		alert("날짜를 다시 확인해주세요");
+		$('#dateb').val('');
+		return false;
+	}
+})
 .on('click','#tblone tbody tr',function(){
 	let date1 = $('#datea').val();
 	let date2 = $('#dateb').val();
@@ -245,12 +268,6 @@ $(document)
     let nowdate = new Date();
     let datems = Math.abs(dateb - datea);
     let Days = Math.ceil(datems / (1000 * 60 * 60 * 24));
-    if(datea >= dateb) {
-    	alert("날짜를 다시 확인해주세요");
-    	$('#datea').val('');
-    	$('#dateb').val('');
-    	return false;
-    }
     if(datea < nowdate) {
     	alert("checkin을 다시 확인해주세요");
     	$('#datea').val('');
