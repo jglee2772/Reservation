@@ -144,7 +144,7 @@
                 <tr><td>모바일</td><td><input type="text" id="twomobile"></td></tr>
                 <input type="hidden" id="twoprice">
                 <tr><td>총숙박비</td><td><input type="number" id="twosum" readonly></td></tr>
-                <tr><td>숙박인원</td><td><input type="number" id="twoperson"></td></tr>
+                <tr><td>숙박인원</td><td><input type="number" id="twoperson" min=1></td></tr>
                 <tr><td colspan="2"><input type="button" id="btntwoon" value="등록"><input type="button" id="btntwocancel" value="삭제"><input type="button" id="btntwoclear" value="비우기"></td></tr>
             </table>
         </div>
@@ -242,16 +242,30 @@ $(document)
 	let price = $(this).find("td:eq(3)").text();
 	let datea = new Date(date1);
     let dateb = new Date(date2);
+    let nowdate = new Date();
     let datems = Math.abs(dateb - datea);
     let Days = Math.ceil(datems / (1000 * 60 * 60 * 24));
-	
+    if(datea >= dateb) {
+    	alert("날짜를 다시 확인해주세요");
+    	$('#datea').val('');
+    	$('#dateb').val('');
+    	return false;
+    }
+    if(datea < nowdate) {
+    	alert("checkin을 다시 확인해주세요");
+    	$('#datea').val('');
+    	$('#dateb').val('');
+    	return false;
+    }
+    let personal = $(this).find('td:eq(2)').text();
+    $('#twoperson').attr('max', personal);
 	$('#hid').val(id);
 	$('#twodate1').val(date1);
 	$('#twodate2').val(date2);
 	$('#twotype').val(type);
 	$('#twoname').val(typename);
 	$('#twoprice').val(price);
-	$('#twoperson').val(0);
+	$('#twoperson').val(1);
 	$('#twosum').val(price*Days);
 })
 .on('click','#tblthree tbody tr',function(){

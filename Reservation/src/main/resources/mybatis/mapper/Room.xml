@@ -50,10 +50,10 @@
         and b.id=#{param1};
 	</select>
 	<select id="getFutureBookList" resultType="com.hotel.book.DTO.bookDTO">
-	    SELECT a.id, a.checkin, a.checkout, b.name AS roomname, a.name, a.mobile, a.howmany, a.howmuch
-	    FROM book a
+	    select a.id, a.checkin, a.checkout, b.name AS roomname, a.name, a.mobile, a.howmany, a.howmuch
+	    from book a
 	    JOIN room b ON a.room_id = b.id
-	    WHERE a.checkout >= CURDATE()
-	    ORDER BY a.checkin;
+	    where a.checkout >= curdate()
+	    order by a.checkin;
 	</select>
 </mapper>
